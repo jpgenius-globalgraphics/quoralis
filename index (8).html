@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Quoralis — Financial Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --green:#4ade9a;
+  --green-dim:rgba(74,222,154,0.13);
+  --green-glow:rgba(74,222,154,0.07);
+  --bg:#080d08;
+  --bg2:#0d140d;
+  --text:#e8f0e8;
+  --muted:#5a7a5a;
+  --dimmer:#3a5a3a;
+  --border:rgba(74,222,154,0.11);
+  --border-md:rgba(74,222,154,0.22);
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;overflow-x:hidden;line-height:1;}
+
+/* GRID */
+.grid-bg{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(74,222,154,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,154,0.025) 1px,transparent 1px);
+  background-size:52px 52px;}
+.grid-bg::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(74,222,154,0.07) 0%,transparent 70%);}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:62px;background:rgba(8,13,8,0.88);backdrop-filter:blur(14px);
+  border-bottom:0.5px solid var(--border);}
+.nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none;}
+.nav-logo-icon{width:28px;height:28px;border-radius:7px;border:0.5px solid rgba(74,222,154,0.3);
+  background:var(--green-glow);display:flex;align-items:center;justify-content:center;}
+.nav-wordmark{font-size:14px;font-weight:700;letter-spacing:0.09em;color:var(--text);}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-links a{font-size:12px;font-family:'DM Mono',monospace;letter-spacing:0.05em;
+  color:var(--muted);text-decoration:none;transition:color 0.18s;}
+.nav-links a:hover{color:var(--green);}
+.nav-cta{display:flex;gap:9px;align-items:center;}
+.btn-ghost{font-size:12px;font-family:'DM Mono',monospace;letter-spacing:0.05em;
+  color:var(--muted);background:transparent;border:0.5px solid rgba(255,255,255,0.09);
+  padding:7px 16px;border-radius:7px;cursor:pointer;transition:all 0.18s;text-decoration:none;}
+.btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,0.18);}
+.btn-primary{font-size:12px;font-family:'DM Mono',monospace;letter-spacing:0.05em;
+  color:#080d08;background:var(--green);border:none;padding:7px 18px;border-radius:7px;
+  cursor:pointer;transition:all 0.18s;text-decoration:none;font-weight:500;}
+.btn-primary:hover{opacity:0.87;}
+
+/* HERO */
+.hero{position:relative;z-index:1;min-height:92vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:110px 24px 60px;text-align:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-family:'DM Mono',monospace;
+  letter-spacing:0.1em;color:var(--green);border:0.5px solid rgba(74,222,154,0.22);
+  background:var(--green-glow);padding:5px 14px;border-radius:100px;margin-bottom:32px;
+  animation:fadeUp 0.5s ease both;}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 2s ease infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.25}}
+.hero-h1{font-size:clamp(28px,3.8vw,52px);font-weight:800;line-height:1.1;letter-spacing:-0.025em;
+  color:var(--text);max-width:700px;animation:fadeUp 0.5s ease 0.08s both;}
+.hero-h1 em{font-style:normal;color:var(--green);}
+.hero-sub{font-size:16px;color:var(--muted);line-height:1.65;max-width:480px;margin:22px auto 0;
+  font-weight:400;animation:fadeUp 0.5s ease 0.16s both;}
+
+/* TOOL CARDS */
+.tool-cards{display:flex;gap:14px;margin-top:52px;animation:fadeUp 0.5s ease 0.24s both;}
+.tool-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;
+  padding:22px 26px;cursor:pointer;transition:all 0.22s;text-align:left;min-width:190px;
+  text-decoration:none;display:block;}
+.tool-card:hover{border-color:var(--border-md);background:rgba(74,222,154,0.05);transform:translateY(-2px);}
+.tool-card-icon{width:34px;height:34px;border-radius:8px;border:0.5px solid rgba(74,222,154,0.22);
+  background:var(--green-glow);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.tool-card-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:5px;}
+.tool-card-desc{font-size:11.5px;color:var(--muted);line-height:1.55;}
+.tool-card-arrow{font-size:11px;font-family:'DM Mono',monospace;color:var(--dimmer);
+  margin-top:14px;transition:color 0.18s;}
+.tool-card:hover .tool-card-arrow{color:var(--green);}
+
+/* FREE TIER STRIP */
+.free-strip{position:relative;z-index:1;display:flex;justify-content:center;align-items:center;gap:32px;
+  padding:18px 48px;border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);
+  background:rgba(74,222,154,0.03);}
+.free-item{display:flex;align-items:center;gap:8px;font-size:12px;font-family:'DM Mono',monospace;
+  letter-spacing:0.05em;color:var(--muted);}
+.free-check{color:var(--green);font-size:13px;}
+.free-sep{width:1px;height:18px;background:var(--border);}
+
+/* FEATURES SECTION */
+.features{position:relative;z-index:1;padding:72px 48px;}
+.sec-eyebrow{font-size:11px;font-family:'DM Mono',monospace;letter-spacing:0.12em;
+  color:var(--green);margin-bottom:14px;opacity:0.85;}
+.sec-h2{font-size:clamp(26px,3.5vw,40px);font-weight:800;letter-spacing:-0.02em;
+  line-height:1.1;color:var(--text);max-width:480px;margin-bottom:44px;}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--border);border:0.5px solid var(--border);border-radius:12px;overflow:hidden;}
+.feat-cell{background:var(--bg2);padding:26px;transition:background 0.2s;cursor:default;}
+.feat-cell:hover{background:rgba(74,222,154,0.04);}
+.feat-icon{width:34px;height:34px;border-radius:8px;border:0.5px solid rgba(74,222,154,0.2);
+  background:var(--green-glow);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.feat-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.feat-desc{font-size:12.5px;color:var(--muted);line-height:1.6;}
+
+/* CTA SECTION */
+.cta-section{position:relative;z-index:1;padding:72px 48px;
+  border-top:0.5px solid var(--border);text-align:center;}
+.cta-box{max-width:560px;margin:0 auto;padding:52px;
+  background:var(--bg2);border:0.5px solid var(--border-md);border-radius:16px;
+  position:relative;overflow:hidden;}
+.cta-box::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(74,222,154,0.06) 0%,transparent 70%);
+  pointer-events:none;}
+.cta-h2{font-size:clamp(24px,3vw,34px);font-weight:800;letter-spacing:-0.02em;
+  color:var(--text);margin-bottom:12px;line-height:1.15;}
+.cta-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:28px;}
+.cta-btn-lg{display:inline-block;font-size:14px;font-family:'DM Mono',monospace;letter-spacing:0.05em;
+  color:#080d08;background:var(--green);border:none;padding:13px 32px;border-radius:9px;
+  cursor:pointer;font-weight:500;transition:all 0.2s;text-decoration:none;}
+.cta-btn-lg:hover{opacity:0.87;transform:translateY(-1px);}
+
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:0.5px solid var(--border);
+  padding:32px 48px;display:flex;justify-content:space-between;align-items:center;}
+.footer-logo{font-size:13px;font-weight:700;letter-spacing:0.09em;color:var(--dimmer);}
+.footer-links{display:flex;gap:22px;}
+.footer-links a{font-size:11px;font-family:'DM Mono',monospace;color:var(--dimmer);
+  text-decoration:none;transition:color 0.18s;letter-spacing:0.04em;}
+.footer-links a:hover{color:var(--muted);}
+.footer-copy{font-size:11px;font-family:'DM Mono',monospace;color:var(--dimmer);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* PAGES (hidden by default) */
+.page{display:none;position:fixed;inset:0;z-index:200;background:var(--bg);overflow-y:auto;}
+.page.active{display:block;}
+.page-inner{max-width:860px;margin:0 auto;padding:100px 48px 80px;}
+.page-back{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-family:'DM Mono',monospace;
+  letter-spacing:0.05em;color:var(--muted);cursor:pointer;background:none;border:none;
+  transition:color 0.18s;margin-bottom:36px;}
+.page-back:hover{color:var(--green);}
+.page-h1{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-0.025em;color:var(--text);
+  margin-bottom:12px;line-height:1.1;}
+.page-sub{font-size:15px;color:var(--muted);line-height:1.65;max-width:480px;margin-bottom:48px;}
+
+/* TOOL PAGE CONTENT */
+.tool-feature-list{display:flex;flex-direction:column;gap:16px;margin-bottom:40px;}
+.tool-feature{display:flex;gap:14px;align-items:flex-start;padding:20px;
+  background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;}
+.tool-feat-icon{width:36px;height:36px;border-radius:8px;border:0.5px solid rgba(74,222,154,0.2);
+  background:var(--green-glow);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tool-feat-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.tool-feat-desc{font-size:13px;color:var(--muted);line-height:1.6;}
+.launch-btn{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-family:'DM Mono',monospace;
+  letter-spacing:0.05em;color:#080d08;background:var(--green);border:none;padding:12px 28px;
+  border-radius:8px;cursor:pointer;font-weight:500;transition:all 0.18s;text-decoration:none;}
+.launch-btn:hover{opacity:0.87;}
+.stat-mini-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:40px;}
+.stat-mini{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:20px;}
+.stat-mini-num{font-size:28px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.stat-mini-num span{color:var(--green);}
+.stat-mini-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:0.08em;
+  color:var(--muted);margin-top:4px;}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#" onclick="showHome()">
+    <div class="nav-logo-icon">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="7" cy="7" r="2.4" fill="#4ade9a" opacity="0.9"/>
+        <circle cx="7" cy="7" r="5.5" stroke="#4ade9a" stroke-width="0.7" opacity="0.4"/>
+        <line x1="7" y1="1.5" x2="7" y2="0" stroke="#4ade9a" stroke-width="1.4" opacity="0.6"/>
+        <line x1="12.5" y1="7" x2="14" y2="7" stroke="#4ade9a" stroke-width="1.4" opacity="0.6"/>
+        <line x1="7" y1="12.5" x2="7" y2="14" stroke="#4ade9a" stroke-width="1.4" opacity="0.6"/>
+        <line x1="1.5" y1="7" x2="0" y2="7" stroke="#4ade9a" stroke-width="1.4" opacity="0.6"/>
+      </svg>
+    </div>
+    <span class="nav-wordmark">QUORALIS</span>
+  </a>
+  <div class="nav-links">
+    <a href="#" onclick="openPage('page-assistant'); return false;">Research Assistant</a>
+    <a href="#" onclick="openPage('page-modeler'); return false;">Financial Modeler</a>
+    <a href="#" onclick="openPage('page-docs'); return false;">Document Analyzer</a>
+  </div>
+  <div class="nav-cta">
+    <a href="#" class="btn-ghost">Log in</a>
+    <a href="#" class="btn-primary">Get started →</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════ HOME ═══════════════════ -->
+<div id="home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge"><div class="badge-dot"></div>NOW IN BETA · FREE TO START</div>
+    <h1 class="hero-h1">The <em>research platform</em> built for serious financial thinkers</h1>
+    <p class="hero-sub">AI-powered research, modeling, and analysis tools for economists, entrepreneurs, and business owners.</p>
+
+    <div class="tool-cards">
+      <a class="tool-card" href="#" onclick="openPage('page-assistant'); return false;">
+        <div class="tool-card-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <circle cx="8.5" cy="8.5" r="5.5" stroke="#4ade9a" stroke-width="1.1"/>
+            <path d="M6 8.5h5M8.5 6v5" stroke="#4ade9a" stroke-width="1.1" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="tool-card-name">Research Assistant</div>
+        <div class="tool-card-desc">Ask any economic or market question. Get live, cited answers.</div>
+        <div class="tool-card-arrow">Explore tool →</div>
+      </a>
+      <a class="tool-card" href="#" onclick="openPage('page-modeler'); return false;">
+        <div class="tool-card-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <rect x="2.5" y="2.5" width="5" height="5" rx="1" stroke="#4ade9a" stroke-width="1.1"/>
+            <rect x="9.5" y="2.5" width="5" height="5" rx="1" stroke="#4ade9a" stroke-width="1.1"/>
+            <rect x="2.5" y="9.5" width="5" height="5" rx="1" stroke="#4ade9a" stroke-width="1.1"/>
+            <rect x="9.5" y="9.5" width="5" height="5" rx="1" stroke="#4ade9a" stroke-width="1.1"/>
+          </svg>
+        </div>
+        <div class="tool-card-name">Financial Modeler</div>
+        <div class="tool-card-desc">DCF, break-even, scenario analysis. No spreadsheet needed.</div>
+        <div class="tool-card-arrow">Explore tool →</div>
+      </a>
+      <a class="tool-card" href="#" onclick="openPage('page-docs'); return false;">
+        <div class="tool-card-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <rect x="3" y="2" width="11" height="13" rx="1.5" stroke="#4ade9a" stroke-width="1.1"/>
+            <path d="M5.5 6h6M5.5 9h4" stroke="#4ade9a" stroke-width="1.1" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="tool-card-name">Document Analyzer</div>
+        <div class="tool-card-desc">Upload reports and earnings calls. AI extracts what matters.</div>
+        <div class="tool-card-arrow">Explore tool →</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- FREE TOOLS STRIP -->
+  <div class="free-strip">
+    <div class="free-item"><span class="free-check">✓</span> Research Assistant — free</div>
+    <div class="free-sep"></div>
+    <div class="free-item"><span class="free-check">✓</span> Financial Modeler — free</div>
+    <div class="free-sep"></div>
+    <div class="free-item"><span class="free-check">✓</span> Document Analyzer — free</div>
+    <div class="free-sep"></div>
+    <div class="free-item"><span class="free-check">✓</span> No credit card required</div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="sec-eyebrow">WHY QUORALIS</div>
+    <h2 class="sec-h2">Everything a serious researcher needs</h2>
+    <div class="feat-grid">
+      <div class="feat-cell">
+        <div class="feat-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <path d="M2 13l3.5-5 3 3.5 3.5-6 3 4" stroke="#4ade9a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="feat-title">Live market data</div>
+        <div class="feat-desc">Equities, forex, commodities, and crypto from trusted real-time feeds.</div>
+      </div>
+      <div class="feat-cell">
+        <div class="feat-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <circle cx="8.5" cy="8.5" r="5.5" stroke="#4ade9a" stroke-width="1.1"/>
+            <path d="M8.5 5.5v3.5l2 1.2" stroke="#4ade9a" stroke-width="1.1" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="feat-title">News with AI analysis</div>
+        <div class="feat-desc">AI reads and summarizes market-moving news so you don't have to.</div>
+      </div>
+      <div class="feat-cell">
+        <div class="feat-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <circle cx="7" cy="7" r="4" stroke="#4ade9a" stroke-width="1.1"/>
+            <path d="M10 10.5l4 4" stroke="#4ade9a" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="feat-title">Web-grounded answers</div>
+        <div class="feat-desc">The assistant searches the web before answering, so data is always current.</div>
+      </div>
+      <div class="feat-cell">
+        <div class="feat-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <path d="M3 14l3-4 2.5 2.5 4-6.5 2.5 3.5" stroke="#4ade9a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 14h13" stroke="#4ade9a" stroke-width="0.8" stroke-linecap="round" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="feat-title">Scenario modeling</div>
+        <div class="feat-desc">Stress-test financial assumptions across bull, base, and bear cases.</div>
+      </div>
+      <div class="feat-cell">
+        <div class="feat-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <rect x="3" y="2" width="11" height="13" rx="1.5" stroke="#4ade9a" stroke-width="1.1"/>
+            <path d="M5.5 6h6M5.5 9h4M5.5 12h2" stroke="#4ade9a" stroke-width="1.1" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="feat-title">PDF & report upload</div>
+        <div class="feat-desc">Drop in any document and get an instant AI summary with risk flags.</div>
+      </div>
+      <div class="feat-cell">
+        <div class="feat-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <path d="M8.5 3v11M3 8.5h11" stroke="#4ade9a" stroke-width="1.2" stroke-linecap="round"/>
+            <rect x="4" y="4" width="9" height="9" rx="2" stroke="#4ade9a" stroke-width="0.7" opacity="0.35"/>
+          </svg>
+        </div>
+        <div class="feat-title">Export & share</div>
+        <div class="feat-desc">Download research as PDF or CSV. Share sessions with your team.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-box">
+      <h2 class="cta-h2">Start researching in seconds</h2>
+      <p class="cta-sub">No credit card. No setup. Just create an account and every tool is ready to use immediately.</p>
+      <a href="#" class="cta-btn-lg">Create free account →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">QUORALIS</div>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Docs</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="footer-copy">© 2025 Quoralis</div>
+  </footer>
+
+</div><!-- /home -->
+
+<!-- ═══════════════════ RESEARCH ASSISTANT PAGE ═══════════════════ -->
+<div class="page" id="page-assistant">
+  <div class="page-inner">
+    <button class="page-back" onclick="closePage('page-assistant')">← Back to Quoralis</button>
+    <div class="sec-eyebrow">TOOL 01</div>
+    <h1 class="page-h1">Research Assistant</h1>
+    <p class="page-sub">Ask any economic or financial question. The assistant searches the web in real time and gives you structured, actionable answers — not generic summaries.</p>
+
+    <div class="stat-mini-row">
+      <div class="stat-mini">
+        <div class="stat-mini-num"><span>Live</span></div>
+        <div class="stat-mini-label">WEB SEARCH</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-num"><span>Multi</span></div>
+        <div class="stat-mini-label">TURN MEMORY</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-num"><span>Free</span></div>
+        <div class="stat-mini-label">TO USE</div>
+      </div>
+    </div>
+
+    <div class="tool-feature-list">
+      <div class="tool-feature">
+        <div class="tool-feat-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <circle cx="7" cy="7" r="4" stroke="#4ade9a" stroke-width="1.1"/>
+            <path d="M10 10.5l4 4" stroke="#4ade9a" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="tool-feat-title">Live web search built in</div>
+          <div class="tool-feat-desc">Before answering, the assistant searches the web for current data. You'll always get answers grounded in what's happening now, not months-old training data.</div>
+        </div>
+      </div>
+      <div class="tool-feature">
+        <div class="tool-feat-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <path d="M3 5h11M3 8.5h7M3 12h5" stroke="#4ade9a" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="tool-feat-title">Structured, cited responses</div>
+          <div class="tool-feat-desc">Answers use headers, bullet points, and data references — not walls of unstructured text. Designed for researchers and decision-makers who need to act fast.</div>
+        </div>
+      </div>
+      <div class="tool-feature">
+        <div class="tool-feat-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <path d="M3 14l4-5 3 3 4-6.5 2.5 3.5" stroke="#4ade9a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="tool-feat-title">Full conversation memory</div>
+          <div class="tool-feat-desc">Ask follow-up questions naturally. The assistant remembers the full context of your session, so you can dig deeper without repeating yourself.</div>
+        </div>
+      </div>
+    </div>
+
+    <a href="assistant.html" class="launch-btn">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 2.5v10M2.5 7.5h10" stroke="#080d08" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Open Research Assistant
+    </a>
+  </div>
+</div>
+
+<!-- ═══════════════════ FINANCIAL MODELER PAGE ═══════════════════ -->
+<div class="page" id="page-modeler">
+  <div class="page-inner">
+    <button class="page-back" onclick="closePage('page-modeler')">← Back to Quoralis</button>
+    <div class="sec-eyebrow">TOOL 02</div>
+    <h1 class="page-h1">Financial Modeler</h1>
+    <p class="page-sub">Run DCF valuations, break-even analyses, and scenario plans without a spreadsheet. Adjust assumptions and see results update instantly.</p>
+
+    <div class="stat-mini-row">
+      <div class="stat-mini">
+        <div class="stat-mini-num">3<span>+</span></div>
+        <div class="stat-mini-label">MODEL TYPES</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-num"><span>Live</span></div>
+        <div class="stat-mini-label">CALCULATIONS</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-num"><span>PDF</span></div>
+        <div class="stat-mini-label">EXPORT READY</div>
+      </div>
+    </div>
+
+    <div class="tool-feature-list">
+      <div class="tool-feature">
+        <div class="tool-feat-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <rect x="2.5" y="2.5" width="5" height="5" rx="1" stroke="#4ade9a" stroke-width="1.1"/>
+            <rect x="9.5" y="2.5" width="5" height="5" rx="1" stroke="#4ade9a" stroke-width="1.1"/>
+            <rect x="2.5" y="9.5" width="5" height="5" rx="1" stroke="#4ade9a" stroke-width="1.1"/>
+            <rect x="9.5" y="9.5" width="5" height="5" rx="1" stroke="#4ade9a" stroke-width="1.1"/>
+          </svg>
+        </div>
+        <div>
+          <div class="tool-feat-title">DCF Valuation</div>
+          <div class="tool-feat-desc">Input revenue, growth rate, WACC, and terminal growth. Get a full discounted cash flow valuation with margin of safety analysis.</div>
+        </div>
+      </div>
+      <div class="tool-feature">
+        <div class="tool-feat-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <path d="M2 13l3.5-5 3 3.5 3.5-6 3 4" stroke="#4ade9a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="tool-feat-title">Break-even analysis</div>
+          <div class="tool-feat-desc">Enter your fixed costs, variable costs, and pricing. The model calculates your break-even point and charts the path to profitability.</div>
+        </div>
+      </div>
+      <div class="tool-feature">
+        <div class="tool-feat-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <path d="M2.5 14.5h12M5 14.5V8M8.5 14.5V5M12 14.5V10" stroke="#4ade9a" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="tool-feat-title">Scenario planning</div>
+          <div class="tool-feat-desc">Model bull, base, and bear cases side by side. Stress-test key assumptions and understand your exposure before committing capital.</div>
+        </div>
+      </div>
+    </div>
+
+    <a href="modeler.html" class="launch-btn">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 2.5v10M2.5 7.5h10" stroke="#080d08" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Open Financial Modeler
+    </a>
+  </div>
+</div>
+
+<!-- ═══════════════════ DOCUMENT ANALYZER PAGE ═══════════════════ -->
+<div class="page" id="page-docs">
+  <div class="page-inner">
+    <button class="page-back" onclick="closePage('page-docs')">← Back to Quoralis</button>
+    <div class="sec-eyebrow">TOOL 03</div>
+    <h1 class="page-h1">Document Analyzer</h1>
+    <p class="page-sub">Upload any financial document — earnings calls, research papers, annual reports, PDFs. Get an instant AI summary with key figures and risk flags highlighted.</p>
+
+    <div class="stat-mini-row">
+      <div class="stat-mini">
+        <div class="stat-mini-num"><span>Any</span></div>
+        <div class="stat-mini-label">PDF OR DOC</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-num"><span>&lt;30s</span></div>
+        <div class="stat-mini-label">ANALYSIS TIME</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-num"><span>Free</span></div>
+        <div class="stat-mini-label">TO USE</div>
+      </div>
+    </div>
+
+    <div class="tool-feature-list">
+      <div class="tool-feature">
+        <div class="tool-feat-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <rect x="3" y="2" width="11" height="13" rx="1.5" stroke="#4ade9a" stroke-width="1.1"/>
+            <path d="M5.5 6h6M5.5 9h4" stroke="#4ade9a" stroke-width="1.1" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="tool-feat-title">Instant summary</div>
+          <div class="tool-feat-desc">Upload a 100-page report and get a structured summary in under 30 seconds. Key findings, notable figures, and management tone — all extracted automatically.</div>
+        </div>
+      </div>
+      <div class="tool-feature">
+        <div class="tool-feat-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <path d="M8.5 3.5L5 10h7L8.5 3.5z" stroke="#4ade9a" stroke-width="1.1" stroke-linejoin="round"/>
+            <path d="M8.5 7.5v2" stroke="#4ade9a" stroke-width="1.1" stroke-linecap="round"/>
+            <circle cx="8.5" cy="11" r="0.6" fill="#4ade9a"/>
+          </svg>
+        </div>
+        <div>
+          <div class="tool-feat-title">Risk flag detection</div>
+          <div class="tool-feat-desc">The analyzer highlights red flags — missed guidance, covenant risk, unusual language shifts, and executive hedging — so nothing slips past you.</div>
+        </div>
+      </div>
+      <div class="tool-feature">
+        <div class="tool-feat-icon">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <circle cx="8.5" cy="8.5" r="5.5" stroke="#4ade9a" stroke-width="1.1"/>
+            <path d="M6 8.5l2 2 3.5-3.5" stroke="#4ade9a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="tool-feat-title">Sentiment scoring</div>
+          <div class="tool-feat-desc">Every document gets a sentiment score from 0–100. Compare how management tone has shifted across quarters or between competitors.</div>
+        </div>
+      </div>
+    </div>
+
+    <a href="docs.html" class="launch-btn">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 2.5v10M2.5 7.5h10" stroke="#080d08" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Open Document Analyzer
+    </a>
+  </div>
+</div>
+
+<script>
+function openPage(id) {
+  document.getElementById(id).classList.add('active');
+  document.getElementById('home').style.display = 'none';
+  window.scrollTo(0,0);
+}
+function closePage(id) {
+  document.getElementById(id).classList.remove('active');
+  document.getElementById('home').style.display = 'block';
+  window.scrollTo(0,0);
+}
+function showHome() {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('home').style.display = 'block';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
